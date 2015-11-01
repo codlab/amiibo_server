@@ -21,5 +21,5 @@ connection = ActiveRecord::Base.connection
 insert_if_not_exists_revision(connection, 1)
 insert_if_not_exists_revision(connection, 2)
 
-insert_if_not_exists("Toad", "000a000000380102")
+insert_if_not_exists(connection, "Toad", "000a000000380102")
 insert_if_not_exists_revision(connection, 3)
