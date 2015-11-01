@@ -18,7 +18,10 @@ class ApplicationController < ActionController::Base
   end
 
   def check_seed
+    if not Revision.order("revision DESC").first.nil?
       logger.info("#{Revision.order("revision DESC").first.revision}")
+    end
+    
     if Revision.count == 0 or Revision.order("revision DESC").first.revision < CURRENT_REVISION
       Revision.destroy_all
       AmiiboId.destroy_all
