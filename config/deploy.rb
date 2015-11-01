@@ -32,13 +32,23 @@ server "amiibo.codlab.eu", user: "deploy", :roles => [:app, :web, :db], :primary
 #      'PATH' => "/var/lib/gems/1.8/bin:$PATH"
 #}
 
-#namespace :deploy do
-#  task :restart do
-#    on roles(:app), in: :groups, limit: 3, wait: 10 do
-#      run "sudo touch #{File.join(current_path,'tmp','restart.txt')}"
-#    end
-#  end
-#end
+namespace :deploy do
+  task :restart do
+    on roles(:app), in: :groups, limit: 3, wait: 10 do
+      run "sudo touch #{File.join(current_path,'tmp','restart.txt')}"
+    end
+  end
+
+  task :seed do
+    on roles(:app) do
+      within "#{fetch(:deploy_to)}/current/" do
+        with RAILS_ENV: fetch(:environment) do
+          execute :rake, "db:seed"
+        end
+      end
+    end
+  end
+end
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
