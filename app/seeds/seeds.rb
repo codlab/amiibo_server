@@ -10,8 +10,8 @@ Rails.logger.info("count :: #{count} // first_revision :: #{first_revision}")
 
 if count == 0 or first_revision < current_revision
   connection = ActiveRecord::Base.connection
-  connection.execute "TRUNCATE revisions"
-  connection.execute "TRUNCATE amiibo_ids"
+  connection.execute "TRUNCATE revisions RESTART IDENTITY"
+  connection.execute "TRUNCATE amiibo_ids RESTART IDENTITY"
 
   load(Rails.root.join("app", "seeds", "seed_content.rb"))
 end
