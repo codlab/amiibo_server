@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
       connection = ActiveRecord::Base.connection
 
       Revision.destroy_all
-      amiibo_id.destroy_all
+      AmiiboId.destroy_all
 
       insert_if_not_exists_revision(connection, 1)
       insert_if_not_exists_revision(connection, 2)
