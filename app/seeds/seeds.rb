@@ -1,6 +1,6 @@
 current_revision = 3
 
-count = Revision.count == 0
+count = Revision.count
 first_revision = 0
 if count > 0
   first_revision = Revision.order("revision DESC").first.revision
