@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def check_seed
     revision = 0
     if not Revision.order("revision DESC").first.nil?
-      logger.info("#{Revision.order("revision DESC").first.revision}")
+      logger.info("having revision #{Revision.order("revision DESC").first} #{Revision.order("revision DESC").first.revision}")
       revision = Revision.order("revision DESC").first.revision
     end
 
@@ -40,13 +40,13 @@ class ApplicationController < ActionController::Base
 
   def insert_if_not_exists(name, identifier)
     amiibo = AmiiboId.where(:identifier => identifier).first
-    logger.info("#{amiibo}")
+    logger.info("amiibo? #{amiibo}")
     AmiiboId.create({:name => name, :identifier => identifier}) if amiibo.nil?
   end
 
   def insert_if_not_exists_revision(revision)
-    revision = Revision.where(:revision => revision).first
-    logger.info("#{revision}")
-    Revision.create({:revision => revision}) if revision.nil?
+    rev = Revision.where(:revision => revision).first
+    logger.info("revision? #{revision}")
+    Revision.create({:revision => revision}) if rev.nil?
   end
 end
