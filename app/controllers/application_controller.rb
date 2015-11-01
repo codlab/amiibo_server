@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
       revision = Revision.order("revision DESC").first.revision
     end
 
+    logger.info("havin revision -#{revision}-")
     if revision < CURRENT_REVISION
       Revision.destroy_all
       AmiiboId.destroy_all
