@@ -17,6 +17,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_seed
-    load(Rails.root.join("db", "seeds.rb")) if Revision.count < 1
+    logger.info("having revision count #{Revision.count}")
+    if Revision.count < 1
+      load(Rails.root.join("db", "seeds.rb"))
+    end
   end
 end
