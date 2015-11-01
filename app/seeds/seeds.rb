@@ -6,7 +6,7 @@ if count > 0
   first_revision = Revision.order("revision DESC").first.revision
 end
 
-logger.info("count :: #{count} // first_revision :: #{first_revision}")
+Rails.logger.info("count :: #{count} // first_revision :: #{first_revision}")
 
 if count == 0 or first_revision < current_revision
   connection = ActiveRecord::Base.connection
