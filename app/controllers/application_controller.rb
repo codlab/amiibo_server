@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
     if Revision.count == 0 or Revision.order("revision DESC").first.revision < CURRENT_REVISION
       connection = ActiveRecord::Base.connection
 
-      connection.execute "TRUNCATE revisions RESTART IDENTITY"
-      connection.execute "TRUNCATE amiibo_ids RESTART IDENTITY"
+      Revision.destroy_all
+      amiibo_id.destroy_all
 
       insert_if_not_exists_revision(connection, 1)
       insert_if_not_exists_revision(connection, 2)
