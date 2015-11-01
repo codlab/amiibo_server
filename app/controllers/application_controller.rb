@@ -33,12 +33,12 @@ class ApplicationController < ActionController::Base
   private
 
   def insert_if_not_exists(name, identifier)
-    amiibo = AmiiboId.where(:identifier => identifier).first
-    AmiiboId.create(:name => name, :identifier => identifier) if amiibo.nil?
+    #amiibo = AmiiboId.where(:identifier => identifier).first
+    AmiiboId.create(:name => name, :identifier => identifier)# if amiibo.nil?
   end
 
   def insert_if_not_exists_revision(revision)
-    revision = Revision.where(:revision => revision).first
-    Revision.create(:revision => revision) if revision.nil?
+    #revision = Revision.where(:revision => revision).first
+    Revision.create(:revision => revision)# if revision.nil?
   end
 end
