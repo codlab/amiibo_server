@@ -9,7 +9,7 @@ if defined?(Capistrano::Version) && Gem::Version.new(Capistrano::Version).releas
   raise "For Capistrano 3.x integration, please use http://github.com/capistrano/bundler"
 end
 
-set :rvm_type, :user
+set :rvm_type, :system
 set :rvm_ruby_version, '1.9.3-p551'
 
 set :application, "Amiibo"
