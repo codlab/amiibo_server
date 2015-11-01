@@ -18,40 +18,27 @@ class ApplicationController < ActionController::Base
   end
 
   def check_seed
-
     if Revision.count == 0 or Revision.order("revision DESC").first.revision < CURRENT_REVISION
-      connection = ActiveRecord::Base.connection
-
       Revision.destroy_all
       AmiiboId.destroy_all
 
-      insert_if_not_exists_revision(connection, 1)
-      insert_if_not_exists_revision(connection, 2)
+      insert_if_not_exists_revision(1)
+      insert_if_not_exists_revision(2)
 
-      insert_if_not_exists(connection, "Toad", "000a000000380102")
-      insert_if_not_exists_revision(connection, 3)
+      insert_if_not_exists("Toad", "000a000000380102")
+      insert_if_not_exists_revision(3)
     end
   end
 
   private
 
-  def insert_if_not_exists(connection, name, identifier)
-    count = connection.execute "select count(*) from amiibo_ids where identifier = '#{identifier}'"
-    count = count.to_a
-    count = count[0][0].to_i
-
-    logger.info("count #{count}")
-    if count == 0
-      connection.execute "insert into amiibo_ids (identifier, name, created_at, updated_at) values ('#{identifier}', '#{name}', '#{Time.now}', '#{Time.now}')"
-    end
+  def insert_if_not_exists(name, identifier)
+    amiibo = AmiiboId.where(:identifier => identifier).first
+    AmiiboId.create(:name => name, :identifier => identifier) if amiibo.nil?
   end
 
-  def insert_if_not_exists_revision(connection, revision)
-    count = connection.execute "select count(*) from revisions where revision = #{revision}"
-    count = count.to_a
-    logger.info("count revision #{count}")
-    if count == 0
-      connection.execute "insert into revisions (revision, created_at, updated_at) values (#{revision}, '#{Time.now}', '#{Time.now}')"
-    end
+  def insert_if_not_exists_revision(revision)
+    revision = Revision.where(:revision => revision).first
+    Revision.create(:revision => revision) if revision.nil?
   end
 end
