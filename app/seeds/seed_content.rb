@@ -1,6 +1,8 @@
 def insert_if_not_exists(connection, name, identifier)
   count = connection.execute "select count(*) from amiibo_ids where identifier = '#{identifier}'"
   count = count.to_a
+  count = count[0][0].to_i
+
   Rails.logger.info("count #{count}")
   if count == 0
     connection.execute "insert into amiibo_ids (identifier, name, created_at, updated_at) values ('#{identifier}', '#{name}', '#{Time.now}', '#{Time.now}')"
