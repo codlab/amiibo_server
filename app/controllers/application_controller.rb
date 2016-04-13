@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   respond_to :html, :json, :text, :pdf
   before_filter :default_format, :set_header, :check_seed
 
-  CURRENT_REVISION = 3
+  CURRENT_REVISION = 4
 
   def default_format
     logger.info(params[:format])
@@ -82,12 +82,54 @@ class ApplicationController < ActionController::Base
       insert_if_not_exists("Splatoon - Girl", "08000100003e0402")
       insert_if_not_exists("Splatoon - Squid", "0800030000400402")
 
+
+      insert_if_not_exists_revision(4)
+      insert_if_not_exists("SMB - Mario - 8-Bit Classic Colors", "0000000002380602")
+      insert_if_not_exists("SMB - Mario - 8-Bit Modern Colors", "0000000002390602")
+      insert_if_not_exists("SP - Yoshi - Green", "0003010200410302")
+      insert_if_not_exists("SP - Yoshi - Pink", "0003010200420302")
+      insert_if_not_exists("SP - Yoshi - Blue", "0003010200430302")
+      insert_if_not_exists("SP - Yoshi - Mega", "00030102023e0302")
+      insert_if_not_exists("Skylanders - Donkey Kong", "0008FF00023B0702")
+      insert_if_not_exists("Skylanders - Bowser", "0005ff00023a0702")
+      insert_if_not_exists("SSB - Mega Man - Gold", "3480000002580002")
+      insert_if_not_exists("SSB - Lucina", "2102000000290002")
+      insert_if_not_exists("SSB - Robin", "21030000002a0002")
+
+      insert_if_not_exists("SSB - Bowser Jr.", "0006000000150002")
+      insert_if_not_exists("SSB - Dark Pit", "0741000000200002")
+      insert_if_not_exists("SSB - Dr. Mario", "0000010000190002")
+      insert_if_not_exists("SSB - Ganondorf", "01020100001B0002")
+      insert_if_not_exists("SSB - Olimar", "06400100001E0002")
+      insert_if_not_exists("SSB - Palutena", "07420000001F0002")
+      insert_if_not_exists("SSB - Zero Suit Samus", "05C00100001D0002")
+      insert_if_not_exists("SSB - Duck Hunt", "07820000002F0002")
+      insert_if_not_exists("SSB - Mr. G&W", "07800000002D0002")
+      insert_if_not_exists("SSB - R.O.B., Famicom", "07810000002E0002")
+      insert_if_not_exists("SSB - R.O.B., NES", "0781000000330002")
+      insert_if_not_exists("SSB - Mii Brawler", "07C0000000210002")
+      insert_if_not_exists("SSB - Mii Gunner", "07C0010000230002")
+      insert_if_not_exists("SSB - Mii Swordfighter", "07C0010000220002")
+      insert_if_not_exists("SSB - Falco", "05810000001C0002")
+      insert_if_not_exists("SSB - Mewtwo", "19960000023D0002")
+      insert_if_not_exists("Pokken - Mewtwo", "1D000001025C0D02")
+      insert_if_not_exists("SSB - Lucas", "2281000002510002")
+      insert_if_not_exists("SSB - Roy", "2104000002520002")
+      insert_if_not_exists("SSB - Ryu", "34C0000002530002")
+
+      insert_if_not_exists("CHI - Chibi Robo", "22C00000003A0202")
+      insert_if_not_exists("SHK - Shovel Knight", "35C0000002500A02")
+      insert_if_not_exists("LOZ - Midna", "01030000024F0902")
+      #insert_if_not_exists("SSB - Cloud Strife", "21030000002a0002")
+      #insert_if_not_exists("SSB - Corrin", "21030000002a0002")
+      #insert_if_not_exists("SSB - Bayonetta", "21030000002a0002")
     end
   end
 
   private
 
   def insert_if_not_exists(name, identifier)
+    identifier = identifier.downcase
     amiibo = AmiiboId.where(:identifier => identifier).first
     logger.info("amiibo? #{amiibo}")
     AmiiboId.create({:name => name, :identifier => identifier}) if amiibo.nil?
