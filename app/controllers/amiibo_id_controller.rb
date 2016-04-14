@@ -1,7 +1,7 @@
 class AmiiboIdController < ApplicationController
   def list
     hash = Hash.new
-    hash[:revision] = Revision.order("revision DESC").first.revision
+    hash[:revision] = Revision.last.revision
     hash[:apk] = { :version => 6, :url => "http://amiibo.codlab.eu/amiibo.apk"}
     amiibos = []
     amiibos_db = AmiiboId.all
