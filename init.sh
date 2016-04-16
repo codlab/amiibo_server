@@ -1,6 +1,6 @@
 cd /data/amiibo_server
 git submodule init
 git submodule update
-cd amitool
+cd amiitool
 git pull origin master
 ./build.sh
