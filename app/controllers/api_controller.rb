@@ -43,8 +43,8 @@ class ApiController < ApplicationController
       else
         error = true
       end
-    #rescue
-    #  error = true
+    rescue
+      error = true
     end
     render :json => { :error => "missing data", :error => -1} if error
   end
