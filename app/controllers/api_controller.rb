@@ -1,11 +1,11 @@
 class ApiController < ApplicationController
 
   def encrypt
-    operation("encrypt")
+    operation("encrypt", "-e")
   end
 
   def decrypt
-    operation("decrypt")
+    operation("decrypt", "-d")
   end
 
   def stats
@@ -21,7 +21,7 @@ class ApiController < ApplicationController
 
   private
 
-  def operation(type)
+  def operation(type, option)
     error = false
     begin
       if not params.nil? and params.has_key?(:data)
@@ -31,22 +31,31 @@ class ApiController < ApplicationController
 
           name = "#{SecureRandom.uuid}.bin"
           path = File.join("tmp/files", name)
-          File.open(path, "wb") { |f| f.write(data.read) }
+          File.open(path, "wb") do |f|
+            f.write(data.read)
+          end
+
+          having_errors = false
+          IO.popen("amiitool/build/amiitool #{option} -k keys.bin -i tmp/files/#{name} -o tmp/files/#{name}") do |f|
+            data = nil
+            data = f.gets if not f.nil?
+            error = true if not data.nil? and data.length > 0
+          end
 
           File.open(path, "r") { |f| send_data f.read, type: "binary/octet-stream" }
           File.delete(path)
 
           increment(type)
         else
-          render :json => { :error => "invalid data size", :error => -2}
+          render :json => { :message => "invalid data size", :error => -2}, :status => 422
         end
       else
         error = true
       end
-    rescue
-      error = true
+    #rescue
+    #  error = true
     end
-    render :json => { :error => "missing data", :error => -1} if error
+    render :json => { :message => "missing data", :error => -1} if error, :status => 422
   end
 
   def prepare_directory(directory)
