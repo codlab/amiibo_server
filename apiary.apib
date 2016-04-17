@@ -1,0 +1,90 @@
+FORMAT: 1A
+HOST: https://amiibo.codlab.eu/
+
+# Amiibo api
+
+A simple API to retrieve infos about the overall Amiibo library and use standard functions to encrypt and decrypt amiibo dumps
+
+## Library informations [/amiibos]
+
+### List the overall data [GET]
+
++ Response 200 (application/json)
+
+        {
+            amiibos: [
+                {
+                    name: "SMB - Bowser",
+                    identifier: "0005000000390102"
+                }
+            ],
+            revision: 1,
+            apk: {
+                version: 6,
+                url: "http://amiibo.codlab.eu/amiibo.apk"
+            },
+            stats: {
+                encrypt: 8,
+                decrypt: 1
+            }
+        }
+
+## Amiibo Decryption [/decrypt]
+
+### Decrypt a dump [POST]
+
+Decrypt an amiibo dump. The length must be between (non strict) 420 and 450 bytes long.
+The error codes can be :
+
+    -1 : no file in input
+    -2 : invalid data size
+
++ Request (multipart/form-data; boundary=---BOUNDARY)
+
+        -----BOUNDARY
+        Content-Disposition: form-data; name="data"; filename="original_filename.bin"
+        Content-Type: -
+        Content-Transfer-Encoding: base64
+
+        -----BOUNDARY
+
++ Response 201 (binary/octet-stream)
+
+    + Body
+
+            Raw values, the decrypted dump
+
++ Response 422 (application/json)
+
+            {
+                "error": -1,
+                "message": missing data
+            }
+            
+            
+## Amiibo Encryption [/encrypt]
+
+### Encrypt a dump [POST]
+
+Encrypt an amiibo dump. The length must be between (non strict) 420 and 450 bytes long
+The error codes can be :
+
+    -1 : no file in input
+    -2 : invalid data size
+
++ Request (multipart/form-data; boundary=---BOUNDARY)
+
+        -----BOUNDARY
+        Content-Disposition: form-data; name="data"; filename="original_filename.bin"
+        Content-Type: -
+        Content-Transfer-Encoding: base64
+
+        -----BOUNDARY
+
++ Response 201 (binary/octet-stream)
+
+    + Body
+
+            Raw values, the encrypted dump
+
++ Response 422 (application/json)
