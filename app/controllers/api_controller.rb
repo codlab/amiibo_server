@@ -55,7 +55,7 @@ class ApiController < ApplicationController
     #rescue
     #  error = true
     end
-    render :json => { :message => "missing data", :error => -1} if error, :status => 422
+    render :json => { :message => "missing data", :error => -1}, :status => 422 if error
   end
 
   def prepare_directory(directory)
