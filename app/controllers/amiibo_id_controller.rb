@@ -9,8 +9,8 @@ class AmiiboIdController < ApplicationController
     render :json => {
       :amiibos => amiibos,
       :revision => Revision.last.revision,
-      :apk => { :version => 6, :url => "http://amiibo.codlab.eu/amiibo.apk"},
-      :stats => ApiController.stat_json      
+      :apk => { :version => 7, :url => "http://amiibo.codlab.eu/amiibo.apk"},
+      :stats => ApiController.stat_json
     }
   end
 end
